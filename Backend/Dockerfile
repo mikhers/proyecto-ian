@@ -11,6 +11,8 @@ RUN apt-get update && apt-get install -y \
     libboost-system-dev \
     libopenblas-dev \
     liblapack-dev \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
     && apt-get clean
 
 COPY requirements.txt ./
