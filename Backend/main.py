@@ -7,16 +7,16 @@ app = FastAPI()
 
 # Define la ruta para procesar la carga de archivos
 @app.post("/upload/")
-async def procesar_archivos(image: UploadFile = File(...), video: UploadFile = File(...)):
+async def procesar_archivos(imagen: UploadFile = File(...), video: UploadFile = File(...)):
     # Guardar los archivos subidos
-    imagen_path = f"uploads/{image.filename}"
+    imagen_path = f"uploads/{imagen.filename}"
     video_path = f"uploads/{video.filename}"
 
     if not os.path.exists("uploads"):
         os.makedirs("uploads")
 
     with open(imagen_path, "wb") as img_file:
-        img_file.write(await image.read())
+        img_file.write(await imagen.read())
 
     with open(video_path, "wb") as vid_file:
         vid_file.write(await video.read())
