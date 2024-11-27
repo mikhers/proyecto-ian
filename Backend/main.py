@@ -5,6 +5,10 @@ from notebook.refactor import procesar_archivos
 from notebook.funciones import procesar_imagen, procesar_video
 app = FastAPI()
 
+@app.get("/")
+def read_root():
+    return {"message": "Hello, FastAPI"}
+
 # Define la ruta para procesar la carga de archivos
 @app.post("/upload/")
 async def procesar_archivos(imagen: UploadFile = File(...), video: UploadFile = File(...)):
