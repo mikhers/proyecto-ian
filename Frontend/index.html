@@ -1,45 +1,58 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cargar Imagen y Video</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-    <!-- Contenedor del formulario -->
-    <div class="upload-container" id="form-container">
-        <h1>Cargar Imagen y Video</h1>
-        <form id="upload-form">
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <main>
+      <!-- Contenedor del formulario -->
+
+      <section class='home-sec'>
+        <div>
+          <img src="img/2.jpg" alt="banner" />
+        </div>
+
+        <div class="upload-container" id="form-container">
+          <h1>Cargar Imagen y Video</h1>
+          <form id="upload-form">
             <div class="file-input">
-                <label for="image">Selecciona una imagen:</label>
-                <input type="file" id="image" accept="image/*" required>
+              <label for="image">Selecciona una imagen:</label>
+              <input type="file" id="image" accept="image/*" required />
             </div>
             <div class="file-input">
-                <label for="video">Selecciona un video:</label>
-                <input type="file" id="video" accept="video/*" required>
+              <label for="video">Selecciona un video:</label>
+              <input type="file" id="video" accept="video/*" required />
             </div>
             <button type="submit">Subir</button>
-        </form>
-    </div>
+          </form>
+        </div>
+      </section>
 
-    <!-- Contenedor de carga -->
-    <div id="loading" class="hidden">
-        <img  class="imagen-cargada" id="preview-image" src="" alt="Imagen cargada">
+      <!-- Contenedor de carga -->
+      <div id="loading" class="hidden">
+        <img
+          class="imagen-cargada"
+          id="preview-image"
+          src=""
+          alt="Imagen cargada"
+        />
         <h2>Detectando...</h2>
         <p>Por favor, espera mientras procesamos los archivos.</p>
-    </div>
+      </div>
 
-    <!-- Contenedor de resultados -->
-    <div id="result" class="hidden">
+      <!-- Contenedor de resultados -->
+      <div id="result" class="hidden">
         <div class="result-container">
-            <h2>Resultados</h2>
-            <div id="image-result"></div>
-            <div id="video-result"></div>
-            <button onclick="location.reload()">Volver a cargar</button>
+          <h2>Resultados</h2>
+          <div id="image-result"></div>
+          <div id="video-result"></div>
+          <button onclick="location.reload()">Volver a cargar</button>
         </div>
-    </div>
-
+      </div>
+    </main>
     <script src="js/main.js"></script>
-</body>
+  </body>
 </html>
