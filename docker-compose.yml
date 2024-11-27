@@ -1,0 +1,29 @@
+
+services:
+  fastapi_rostros:
+    command: 'uvicorn main:app --host 0.0.0.0 --port 8798'
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    ports:
+      - "8798:8798"
+    volumes:
+      - .:/app
+    environment:
+      VIRTUAL_HOST: 'rostros.buho.media'
+      C_FORCE_ROOT: 1
+      LC_ALL: 'C.UTF-8'
+      LANG: 'C.UTF-8'
+      TZ: 'America/Bogota'
+      VIRTUAL_PORT: '8798'
+      LETSENCRYPT_HOST: 'rostros.buho.media'
+      LETSENCRYPT_EMAIL: 'sistemas.buho@gnilat.com'
+    networks:
+      - default
+      - nginx_proxy
+
+
+networks:
+  default:
+  nginx_proxy:
+    external: true
