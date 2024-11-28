@@ -55,10 +55,25 @@ document.getElementById('upload-form').addEventListener('submit', async (e) => {
       frameServer.innerHTML = ''; // Limpia el contenido previo si es necesario
 
       result.video.frame_guardado_filenames.forEach((filename) => {
-        const img = document.createElement('img'); // Crea un elemento <img>
-        img.className = 'imagen-cargada'; // Añade la clase
-        img.src = `https://rostros.buho.media/video_frame/?frame_name=${filename}`; // Establece la fuente
-        frameServer.appendChild(img); // Agrega la imagen al contenedor
+        // Crea un elemento <div> que contendrá la imagen y el nombre
+        const div = document.createElement('div');
+        div.className = 'frame-container'; // Clase para estilizar el div
+
+        // Crea el elemento <img>
+        const img = document.createElement('img');
+        img.className = 'imagen-cargada';
+        img.src = `https://rostros.buho.media/video_frame/?frame_name=${filename}`;
+
+        // Crea el elemento <p> para mostrar el nombre del archivo
+        const p = document.createElement('p');
+        p.textContent = filename;
+
+        // Añade la imagen y el nombre al div
+        div.appendChild(img);
+        div.appendChild(p);
+
+        // Añade el div al contenedor principal
+        frameServer.appendChild(div);
       });
     }
 
