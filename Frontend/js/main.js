@@ -48,7 +48,7 @@ document.getElementById('upload-form').addEventListener('submit', async (e) => {
 
     setTimeout(() => {
       loadingModal.classList.remove('hidden'); // mostrar modal
-    }, 2000);
+    }, 4000);
 
     loadingModalTexts.innerHTML = `
     <p>Ubicación de la cara: ${JSON.stringify(
