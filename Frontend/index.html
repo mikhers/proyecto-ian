@@ -9,13 +9,12 @@
   <body>
     <main>
       <!-- Contenedor del formulario -->
-
-      <section class='home-sec'>
+      <section class="home-sec">
         <div>
           <img src="img/2.jpg" alt="banner" />
         </div>
 
-        <div class="upload-container" id="form-container">
+        <div class="upload-container">
           <h1>Cargar Imagen y Video</h1>
           <form id="upload-form">
             <div class="file-input">
@@ -31,16 +30,51 @@
         </div>
       </section>
 
-      <!-- Contenedor de carga -->
-      <div id="loading" class="hidden">
-        <img
-          class="imagen-cargada"
-          id="preview-image"
-          src=""
-          alt="Imagen cargada"
-        />
-        <h2>Detectando...</h2>
-        <p>Por favor, espera mientras procesamos los archivos.</p>
+      <!-- modal de carga -->
+      <div id="loading" class="hidden loading_modal_overlay">
+        <div id="loader" class="cont-loader hidden">
+          <img
+            class="imagen-cargada"
+            id="preview-image"
+            src="https://rostros.buho.media/imagen/"
+            alt="Imagen cargada"
+          />
+          <br />
+          <p>Detectando</p>
+
+          <span class="loader_spinner"></span>
+        </div>
+
+        <div id="loading-modal" class="modal-loader hidden">
+          <p>Archivos procesados con exito</p>
+          <br />
+          <div id="loading-modal-texts"></div>
+
+          <br />
+          <br />
+
+          <div class="cont_imgs">
+            <div class="card_image">
+              <p>Imagen procesada</p>
+              <img
+                class="imagen-cargada"
+                id="image-server"
+                src="https://rostros.buho.media/imagen/"
+                alt="Imagen cargada"
+              />
+            </div>
+
+            <div class="card_frame">
+              <p>Frame detectado</p>
+              <img
+                class="imagen-cargada"
+                id="frame-server"
+                src="https://rostros.buho.media/video_frame/"
+                alt="Imagen cargada"
+              />
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Contenedor de resultados -->
