@@ -11,11 +11,14 @@
       <!-- Contenedor del formulario -->
       <section class="home-sec">
         <div>
-          <img src="img/2.jpg" alt="banner" />
+          <h1>Bienvenido al detector de rostros</h1>
+          <h2>
+            Por favor, carga una imagen con un rostro y un video para que
+            nuestro detector en el video los frames en los que detecta el rostro
+          </h2>
         </div>
 
         <div class="upload-container">
-          <h1>Cargar Imagen y Video</h1>
           <form id="upload-form">
             <div class="file-input">
               <label for="image">Selecciona una imagen:</label>
@@ -25,7 +28,8 @@
               <label for="video">Selecciona un video:</label>
               <input type="file" id="video" accept="video/*" required />
             </div>
-            <button type="submit">Subir</button>
+            <br>
+            <button style='width: 100%;' type="submit">Subir</button>
           </form>
         </div>
       </section>

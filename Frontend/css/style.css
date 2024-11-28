@@ -16,12 +16,54 @@ body {
 }
 
 .home-sec > div:first-child {
+  position: relative; /* Necesario para que el overlay funcione */
   height: 100vh;
   width: 100%;
+  background-image: url('../img/2.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  gap: 4rem;
+  padding: 4rem;
+}
+
+.home-sec > div:first-child::before {
+  content: ''; /* Necesario para mostrar el pseudo-elemento */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4); /* Color oscuro con opacidad */
+  z-index: 1; /* Asegura que el overlay esté por encima del fondo */
+}
+
+.home-sec > div:first-child * {
+  position: relative; /* Asegura que el contenido esté por encima del overlay */
+  z-index: 2;
+  color: #fff;
+}
+
+.home-sec > div:first-child h1 {
+  font-size: 3.5rem;
+  text-align: start;
+  width: 80%;
+}
+.home-sec > div:first-child h2 {
+  font-size: 1.5rem;
+  text-align: start;
+  width: 80%;
 }
 
 .home-sec > div:last-child {
   width: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 }
 
 .home-sec > div:first-child img {
