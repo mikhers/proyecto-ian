@@ -39,6 +39,32 @@ def procesar_imagen(image_path):
         "imagen_procesada": imagen_procesada_path
     }
 
+def procesar_video(video_path):
+    video = cv2.VideoCapture(video_path)
+    fps = video.get(cv2.CAP_PROP_FPS)
+    intervalo_segundos = 5
+    intervalo_muestras = int(fps * intervalo_segundos)
+    frame_inicial = 0
+
+    detecciones = []
+
+    while video.isOpened():
+        ret, frame = video.read()
+        if not ret:
+            break
+        if frame_inicial % intervalo_muestras == 0:
+            frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            face_locations = face_recognition.face_locations(frame_rgb, model="cnn")
+            for (top, right, bottom, left) in face_locations:
+                detecciones.append({
+                    "frame": frame_inicial,
+                    "ubicacion": (top, right, bottom, left)
+                })
+        frame_inicial += 1
+
+    video.release()
+    return {"detecciones": detecciones}
+
 def guardar_frame(video_path, frame_index):
     video = cv2.VideoCapture(video_path)
     video.set(cv2.CAP_PROP_POS_FRAMES, frame_index)
