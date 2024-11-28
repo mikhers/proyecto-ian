@@ -17,6 +17,9 @@ document.getElementById('upload-form').addEventListener('submit', async (e) => {
   const videoResultDiv = document.getElementById('video-result');
   const previewImage = document.getElementById('preview-image');
 
+  const imageServer = document.getElementById('image-server');
+  const frameServer = document.getElementById('frame-server');
+
   const formData = new FormData();
   const image = document.getElementById('image').files[0];
   const video = document.getElementById('video').files[0];
@@ -43,23 +46,24 @@ document.getElementById('upload-form').addEventListener('submit', async (e) => {
 
     const result = await response.json();
 
-    // Ocultar el contenedor de carga y mostrar los resultados
-    loadingSpinner.classList.add('hidden'); // ocultaro loader
+    // Agregar un parámetro único para evitar el caché
+    const timestamp = new Date().getTime();
 
-    setTimeout(() => {
-      loadingModal.classList.remove('hidden'); // mostrar modal
-    }, 4000);
+    imageServer.src = `https://rostros.buho.media/imagen/?_=${timestamp}`;
+    frameServer.src = `https://rostros.buho.media/video_frame/?_=${timestamp}`;
+
+    // Ocultar el contenedor de carga y mostrar los resultados
+    loadingSpinner.classList.add('hidden'); // ocultar loader
+
+    loadingModal.classList.remove('hidden'); // mostrar modal
 
     loadingModalTexts.innerHTML = `
     <p>Ubicación de la cara: ${JSON.stringify(
       result.imagen.ubicaciones_caras
     )}</p>
 
-    <p>Coincidecias detectadas: ${result.imagen.numero_caras_detectadas}</p>
-    
+    <p>Coincidencias detectadas: ${result.imagen.numero_caras_detectadas}</p>
     `;
-
-
   } catch (error) {
     console.error('Error al procesar los archivos:', error);
     loadingDiv.classList.add('hidden');
