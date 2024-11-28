@@ -4,6 +4,7 @@ import numpy as np
 from skimage import io
 from PIL import Image, ImageDraw
 import matplotlib.pyplot as plt
+import os
 
 
 def procesar_imagen(image_path):
@@ -63,15 +64,24 @@ def procesar_video(video_path, target_face_encodings):
     video.release()
     return {"detecciones": detecciones}
 
-def guardar_frame(video_path, frame_index, deteccion, target_name="Persona Detectada"):
+def guardar_frame(video_path, frame_index, deteccion, target_name="Persona Detectada", output_dir="frames"):
     video = cv2.VideoCapture(video_path)
     video.set(cv2.CAP_PROP_POS_FRAMES, frame_index)
     ret, frame = video.read()
-    frame_path = "frames/frame_detectado.jpg"
     if ret:
         top, right, bottom, left = deteccion["ubicacion"]
         cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
         cv2.putText(frame, target_name, (left, bottom + 20), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 255), 2)
+        
+        # Crear la carpeta 'frames' si no existe
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+        
+        # Generar un nombre único para el frame
+        frame_filename = f"frame_{frame_index}.jpg"
+        frame_path = os.path.join(output_dir, frame_filename)
         cv2.imwrite(frame_path, frame)
+    else:
+        frame_filename = None
     video.release()
-    return frame_path
+    return frame_filename
