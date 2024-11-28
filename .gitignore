@@ -10,13 +10,6 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# Carpeta para testeo de emails
-tmp/
-# For DEBUG
-# requirements-docs.txt
-# docs
-# build.sh
-
 # C extensions
 *.so
 
@@ -45,9 +38,6 @@ MANIFEST
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
 *.manifest
 *.spec
-
-docker-compose.yml
-uploads/
 
 # Installer logs
 pip-log.txt
@@ -123,8 +113,10 @@ ipython_config.py
 #pdm.lock
 #   pdm stores project-wide configurations in .pdm.toml, but it is recommended to not include it
 #   in version control.
-#   https://pdm.fming.dev/#use-with-ide
+#   https://pdm.fming.dev/latest/usage/project/#working-with-version-control
 .pdm.toml
+.pdm-python
+.pdm-build/
 
 # PEP 582; used by e.g. github.com/David-OConnor/pyflow and github.com/pdm-project/pdm
 __pypackages__/
@@ -136,13 +128,7 @@ celerybeat.pid
 # SageMath parsed files
 *.sage.py
 
-# pruebas
-json/
-json.json
-json-home.json
-
 # Environments
-verne3_env/
 .env
 .venv
 env/

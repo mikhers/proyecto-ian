@@ -52,6 +52,20 @@ async def procesar_archivos(imagen: UploadFile = File(...), video: UploadFile = 
 
     return responses
 
+@app.get("/imagen/")
+def get_imagen():
+    frame_path = "resultado_imagen.jpg"
+    if os.path.exists(frame_path):
+        return StreamingResponse(open(frame_path, "rb"), media_type="image/jpeg")
+    return {"error": "Archivo no encontrado"}
+
+@app.get("/video_frame/")
+def get_video_frame():
+    frame_path = "frame_detectado.jpg"
+    if os.path.exists(frame_path):
+        return StreamingResponse(open(frame_path, "rb"), media_type="image/jpeg")
+    return {"error": "Frame no encontrado"}
+
 # Crea una carpeta para guardar archivos
 if not os.path.exists("uploads"):
     os.makedirs("uploads")
