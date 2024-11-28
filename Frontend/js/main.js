@@ -50,11 +50,20 @@ document.getElementById('upload-form').addEventListener('submit', async (e) => {
     const timestamp = new Date().getTime();
 
     imageServer.src = `https://rostros.buho.media/imagen/?_=${timestamp}`;
-    frameServer.src = `https://rostros.buho.media/video_frame/?_=${timestamp}`;
+    // Asegúrate de que result.video.frame_guardado_filenames sea un array válido
+    if (Array.isArray(result.video.frame_guardado_filenames)) {
+      frameServer.innerHTML = ''; // Limpia el contenido previo si es necesario
+
+      result.video.frame_guardado_filenames.forEach((filename) => {
+        const img = document.createElement('img'); // Crea un elemento <img>
+        img.className = 'imagen-cargada'; // Añade la clase
+        img.src = `https://rostros.buho.media/video_frame/?frame_name=${filename}`; // Establece la fuente
+        frameServer.appendChild(img); // Agrega la imagen al contenedor
+      });
+    }
 
     // Ocultar el contenedor de carga y mostrar los resultados
     loadingSpinner.classList.add('hidden'); // ocultar loader
-
     loadingModal.classList.remove('hidden'); // mostrar modal
 
     loadingModalTexts.innerHTML = `
