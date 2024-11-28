@@ -170,6 +170,11 @@ button:hover {
   aspect-ratio: 1;
 }
 
+.frame-server {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+}
+
 /* spinner */
 
 .cont-loader {
