@@ -6,8 +6,8 @@ from concurrent.futures import ThreadPoolExecutor
 from notebook.refactor import procesar_archivos
 from notebook.funciones import procesar_imagen, procesar_video, guardar_frame
 from fastapi.responses import StreamingResponse
+from fastapi import Request
 app = FastAPI()
-
 executor = ThreadPoolExecutor()
 
 @app.get("/")
@@ -70,17 +70,25 @@ async def procesar_archivos(imagen: UploadFile = File(...), video: UploadFile = 
     }
 
 @app.get("/imagen/")
-def get_imagen():
+def get_imagen(request: Request):
     frame_path = "resultado_imagen.jpg"
     if os.path.exists(frame_path):
-        return StreamingResponse(open(frame_path, "rb"), media_type="image/jpeg")
+        headers = {
+            "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
+            "Pragma": "no-cache"
+        }
+        return StreamingResponse(open(frame_path, "rb"), media_type="image/jpeg", headers=headers)
     return {"error": "Archivo no encontrado"}
 
 @app.get("/video_frame/")
-def get_video_frame():
+def get_video_frame(request: Request):
     frame_path = "frame_detectado.jpg"
     if os.path.exists(frame_path):
-        return StreamingResponse(open(frame_path, "rb"), media_type="image/jpeg")
+        headers = {
+            "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
+            "Pragma": "no-cache"
+        }
+        return StreamingResponse(open(frame_path, "rb"), media_type="image/jpeg", headers=headers)
     return {"error": "Frame no encontrado"}
 
 # Crea una carpeta para guardar archivos
@@ -96,4 +104,5 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["Cache-Control", "Pragma"],
 )
