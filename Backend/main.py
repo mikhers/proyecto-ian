@@ -15,6 +15,12 @@ def read_root():
 # Define la ruta para procesar la carga de archivos
 @app.post("/upload/")
 async def procesar_archivos(imagen: UploadFile = File(...), video: UploadFile = File(...)):
+    # Eliminar archivos previos
+    if os.path.exists("resultado_imagen.jpg"):
+        os.remove("resultado_imagen.jpg")
+    if os.path.exists("frame_detectado.jpg"):
+        os.remove("frame_detectado.jpg")
+
     # Guardar los archivos subidos
     imagen_path = f"uploads/{imagen.filename}"
     video_path = f"uploads/{video.filename}"
@@ -39,30 +45,26 @@ async def procesar_archivos(imagen: UploadFile = File(...), video: UploadFile = 
     else:
         frame_path = None
 
-    # Construir la respuesta con todos los detalles
-    detalles_imagen = {
-        "numero_caras_detectadas": len(resultado_imagen["resultados"]),
-        "ubicaciones_caras": [resultado["ubicacion"] for resultado in resultado_imagen["resultados"]],
-        "imagen_procesada_path": imagen_procesada_path
-    }
+    # Esperar a que tanto la imagen como el frame estén listos
+    while not os.path.exists(imagen_procesada_path):
+        pass
+    if frame_path:
+        while not os.path.exists(frame_path):
+            pass
 
-    if resultado_video["detecciones"]:
-        detalles_video = {
+    # Responder con todos los detalles una vez que ambos procesos hayan terminado
+    return {
+        "mensaje": "Archivos procesados con éxito",
+        "imagen": {
+            "numero_caras_detectadas": len(resultado_imagen["resultados"]),
+            "ubicaciones_caras": [resultado["ubicacion"] for resultado in resultado_imagen["resultados"]],
+            "imagen_procesada_path": imagen_procesada_path
+        },
+        "video": {
             "numero_caras_detectadas": len(resultado_video["detecciones"]),
             "detalles_detecciones": resultado_video["detecciones"],
             "frame_guardado_path": frame_path
         }
-    else:
-        detalles_video = {
-            "numero_caras_detectadas": 0,
-            "detalles_detecciones": [],
-            "frame_guardado_path": None
-        }
-
-    return {
-        "mensaje": "Archivos procesados con éxito",
-        "imagen": detalles_imagen,
-        "video": detalles_video
     }
 
 @app.get("/imagen/")
