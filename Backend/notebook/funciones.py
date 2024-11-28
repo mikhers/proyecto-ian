@@ -7,55 +7,47 @@ import matplotlib.pyplot as plt
 
 
 def procesar_imagen(image_path):
-    # Procesamiento de la imagen
-    print("Comenzó el procesamiento de imagen")
+    # Cargar la imagen usando face_recognition
     imagen = face_recognition.load_image_file(image_path)
-    print("#1")
+
+    # Detectar ubicaciones de caras
     face_locations = face_recognition.face_locations(imagen, model="cnn")
-    print("#2")
-    face_encodings = face_recognition.face_encodings(imagen, face_locations)
-    print("#3")
+
+    # Crear una copia procesada de la imagen para guardar resultados
+    pil_image = Image.fromarray(imagen)
+    draw = ImageDraw.Draw(pil_image)
 
     resultados = []
-    pil_image = Image.fromarray(imagen)
-    print("#4")
-    draw = ImageDraw.Draw(pil_image)
-    print("#5")
-
-    for (top, right, bottom, left), face_encoding in zip(face_locations, face_encodings):
+    for (top, right, bottom, left) in face_locations:
+        # Dibujar rectángulos alrededor de las caras detectadas
         draw.rectangle(((left, top), (right, bottom)), outline=(0, 0, 255))
-        text_width, text_height = draw.textsize("Cara detectada")
-        draw.rectangle(((left, bottom - text_height - 10), (right, bottom)), fill=(0, 0, 255), outline=(0, 0, 255))
-        draw.text((left + 2, bottom - text_height - 5), "Cara detectada", fill=(255, 255, 255, 255))
 
+        # Guardar la ubicación de la cara detectada
         resultados.append({
             "ubicacion": (top, right, bottom, left),
             "mensaje": "Cara detectada"
         })
-    print("#6")
 
-    # Guardar la imagen con rectángulos para enviar como resultado
-    pil_image.save("resultado_imagen.jpg")
+    # Guardar la imagen procesada con rectángulos
+    imagen_procesada_path = "resultado_imagen.jpg"
+    pil_image.save(imagen_procesada_path)
 
-    print("#7")
+    # Devolver detalles del análisis
     return {
         "resultados": resultados,
-        "imagen_procesada": "resultado_imagen.jpg"
+        "numero_caras_detectadas": len(resultados),
+        "imagen_procesada": imagen_procesada_path
     }
 
-
 def procesar_video(video_path):
-    # Procesamiento del video
-    print("Comenzó el procesamiento de video")
     video = cv2.VideoCapture(video_path)
-    print("#8")
     fps = video.get(cv2.CAP_PROP_FPS)
     intervalo_segundos = 5
     intervalo_muestras = int(fps * intervalo_segundos)
     frame_inicial = 0
 
     detecciones = []
-    print("#9")
+
     while video.isOpened():
         ret, frame = video.read()
         if not ret:
@@ -68,9 +60,17 @@ def procesar_video(video_path):
                     "frame": frame_inicial,
                     "ubicacion": (top, right, bottom, left)
                 })
-
         frame_inicial += 1
 
-    print("#10")
     video.release()
     return {"detecciones": detecciones}
+
+def guardar_frame(video_path, frame_index):
+    video = cv2.VideoCapture(video_path)
+    video.set(cv2.CAP_PROP_POS_FRAMES, frame_index)
+    ret, frame = video.read()
+    frame_path = "frame_detectado.jpg"
+    if ret:
+        cv2.imwrite(frame_path, frame)
+    video.release()
+    return frame_path
