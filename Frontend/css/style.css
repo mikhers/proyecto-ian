@@ -44,7 +44,7 @@ body {
 
 .home-sec > div:first-child * {
   position: relative; /* Asegura que el contenido esté por encima del overlay */
-  z-index: 2;
+  z-index: 1;
   color: #fff;
 }
 
@@ -185,6 +185,7 @@ button:hover {
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 5;
 }
 
 /* modal resultado  */
