@@ -1,91 +1,107 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cargar Imagen y Video</title>
-    <link rel="stylesheet" href="css/style.css" />
-  </head>
-  <body>
-    <main>
-      <!-- Contenedor del formulario -->
-      <section class="home-sec">
-        <div>
-          <h1>Bienvenido al detector de rostros</h1>
-          <h2>
-            Por favor, carga una imagen con un rostro y un video para que
-            nuestro detector en el video los frames en los que detecta el rostro
-          </h2>
-        </div>
 
-        <div class="upload-container">
-          <form id="upload-form">
-            <div class="file-input">
-              <label for="image">Selecciona una imagen:</label>
-              <input type="file" id="image" accept="image/*" required />
-            </div>
-            <div class="file-input">
-              <label for="video">Selecciona un video:</label>
-              <input type="file" id="video" accept="video/*" required />
-            </div>
-            <br>
-            <button style='width: 100%;' type="submit">Subir</button>
-          </form>
-        </div>
-      </section>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cargar Imagen y Video</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
 
-      <!-- modal de carga -->
-      <div id="loading" class="hidden loading_modal_overlay">
-        <div id="loader" class="cont-loader hidden">
-          <img
-            class="imagen-cargada"
-            id="preview-image"
-            src="https://rostros.buho.media/imagen/"
-            alt="Imagen cargada"
-          />
-          <br />
-          <p>Detectando</p>
+<body>
+  <main>
+    <!-- Contenedor del formulario -->
+    <section class="home-sec">
+      <div>
+        <h1>Bienvenido al Detector de Rostros 👤</h1>
+        <p>
+          dentifica automáticamente en qué momentos de un video aparece el rostro que deseas buscar.
+        </p>
+        <h2>
+          ¿Cómo funciona?
+        </h2>
+        <ul>
+          <li>💻 Sube una imagen que contenga el rostro que quieres detectar.</li>
+          <li>🎞 Carga el video donde quieres buscar ese rostro.</li>
+          <li>🔍 La app analizará el video y te mostrará los frames exactos donde el rostro aparece.</li>
+        </ul>
 
-          <span class="loader_spinner"></span>
-        </div>
+        <h2>
+          ¿Para qué sirve?
+        </h2>
+        <ul>
+          <li>✔ Análisis de seguridad: Detectar personas en cámaras de vigilancia.</li>
+          <li>✔ Edición de videos: Ubicar momentos específicos donde alguien aparece.</li>
+          <li>✔ Aplicaciones educativas o recreativas: Revisar quién aparece en grabaciones.</li>
+        </ul>
 
-        <div id="loading-modal" class="modal-loader hidden">
-          <p>Archivos procesados con exito</p>
-          <br />
-          <div id="loading-modal-texts"></div>
+        <p>
+          ¡Carga tus archivos y comienza a detectar ahora!
+        </p>
 
-          <br />
-          <br />
+        </h2>
+      </div>
 
-          <div class="cont_imgs">
-            <div class="card_image">
-              <p>Imagen procesada</p>
-              <img
-                class="imagen-cargada"
-                id="image-server"
-                src="https://rostros.buho.media/imagen/"
-                alt="Imagen cargada"
-              />
-            </div>
+      <div class="upload-container">
+        <form id="upload-form">
+          <div class="file-input">
+            <label for="image">Selecciona una imagen:</label>
+            <input type="file" id="image" accept="image/*" required />
+          </div>
+          <div class="file-input">
+            <label for="video">Selecciona un video:</label>
+            <input type="file" id="video" accept="video/*" required />
+          </div>
+          <br>
+          <button style='width: 100%;' type="submit">Subir</button>
+        </form>
+      </div>
+    </section>
 
-            <div class="card_frame">
-              <p>Frame detectado</p>
-              <div id="frame-server" class="frame-server"></div>
-            </div>
+    <!-- modal de carga -->
+    <div id="loading" class="hidden loading_modal_overlay">
+      <div id="loader" class="cont-loader hidden">
+        <img class="imagen-cargada" id="preview-image" src="https://rostros.buho.media/imagen/" alt="Imagen cargada" />
+        <br />
+        <p>Detectando</p>
+
+        <span class="loader_spinner"></span>
+      </div>
+
+      <div id="loading-modal" class="modal-loader hidden">
+        <p>Archivos procesados con exito</p>
+        <br />
+        <div id="loading-modal-texts"></div>
+
+        <br />
+        <br />
+
+        <div class="cont_imgs">
+          <div class="card_image">
+            <p>Imagen procesada</p>
+            <img class="imagen-cargada" id="image-server" src="https://rostros.buho.media/imagen/"
+              alt="Imagen cargada" />
+          </div>
+
+          <div class="card_frame">
+            <p>Frame detectado</p>
+            <div id="frame-server" class="frame-server"></div>
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- Contenedor de resultados -->
-      <div id="result" class="hidden">
-        <div class="result-container">
-          <h2>Resultados</h2>
-          <div id="image-result"></div>
-          <div id="video-result"></div>
-          <button onclick="location.reload()">Volver a cargar</button>
-        </div>
+    <!-- Contenedor de resultados -->
+    <div id="result" class="hidden">
+      <div class="result-container">
+        <h2>Resultados</h2>
+        <div id="image-result"></div>
+        <div id="video-result"></div>
+        <button onclick="location.reload()">Volver a cargar</button>
       </div>
-    </main>
-    <script src="js/main.js"></script>
-  </body>
+    </div>
+  </main>
+  <script src="js/main.js"></script>
+</body>
+
 </html>
