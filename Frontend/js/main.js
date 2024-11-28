@@ -66,7 +66,7 @@ document.getElementById('upload-form').addEventListener('submit', async (e) => {
 
         // Crea el elemento <p> para mostrar el nombre del archivo
         const p = document.createElement('p');
-        p.textContent = filename;
+        p.textContent = filename.replace('_', ' ').replace('.jpg', ' ');
 
         // Añade la imagen y el nombre al div
         div.appendChild(img);
