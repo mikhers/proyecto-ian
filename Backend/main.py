@@ -28,18 +28,41 @@ async def procesar_archivos(imagen: UploadFile = File(...), video: UploadFile = 
     with open(video_path, "wb") as vid_file:
         vid_file.write(await video.read())
 
-    # Procesar la imagen y el video
+    # Procesar la imagen
     resultado_imagen = procesar_imagen(imagen_path)
-    print("procesar_imagen(imagen_path)")
-    print(resultado_imagen)
+    imagen_procesada_path = resultado_imagen["imagen_procesada"]
+
+    # Procesar el video
     resultado_video = procesar_video(video_path)
-    print("procesar_video(video_path)")
-    print(resultado_video)
+    if resultado_video["detecciones"]:
+        frame_path = guardar_frame(video_path, resultado_video["detecciones"][0]["frame"])
+    else:
+        frame_path = None
+
+    # Construir la respuesta con todos los detalles
+    detalles_imagen = {
+        "numero_caras_detectadas": len(resultado_imagen["resultados"]),
+        "ubicaciones_caras": [resultado["ubicacion"] for resultado in resultado_imagen["resultados"]],
+        "imagen_procesada_path": imagen_procesada_path
+    }
+
+    if resultado_video["detecciones"]:
+        detalles_video = {
+            "numero_caras_detectadas": len(resultado_video["detecciones"]),
+            "detalles_detecciones": resultado_video["detecciones"],
+            "frame_guardado_path": frame_path
+        }
+    else:
+        detalles_video = {
+            "numero_caras_detectadas": 0,
+            "detalles_detecciones": [],
+            "frame_guardado_path": None
+        }
 
     return {
         "mensaje": "Archivos procesados con éxito",
-        "imagen_resultado": resultado_imagen,
-        "video_resultado": resultado_video
+        "imagen": detalles_imagen,
+        "video": detalles_video
     }
 
 @app.get("/imagen/")
