@@ -23,4 +23,4 @@ COPY . .
 EXPOSE 8798
 
 # Comando por defecto
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8798"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8798", "--timeout-keep-alive", "120"]
