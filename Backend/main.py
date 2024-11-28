@@ -1,12 +1,14 @@
-from fastapi import FastAPI, File, UploadFile
 import os
 import io
-
-
+import asyncio
+from fastapi import FastAPI, File, UploadFile
+from concurrent.futures import ThreadPoolExecutor
 from notebook.refactor import procesar_archivos
 from notebook.funciones import procesar_imagen, procesar_video, guardar_frame
 from fastapi.responses import StreamingResponse
 app = FastAPI()
+
+executor = ThreadPoolExecutor()
 
 @app.get("/")
 def read_root():
@@ -34,23 +36,23 @@ async def procesar_archivos(imagen: UploadFile = File(...), video: UploadFile = 
     with open(video_path, "wb") as vid_file:
         vid_file.write(await video.read())
 
-    # Procesar la imagen
-    resultado_imagen = procesar_imagen(imagen_path)
+    # Procesar la imagen y el video en paralelo usando asyncio
+    loop = asyncio.get_event_loop()
+
+    procesar_imagen_task = loop.run_in_executor(executor, procesar_imagen, imagen_path)
+    procesar_video_task = loop.run_in_executor(executor, procesar_video, video_path)
+
+    # Esperar a que ambas tareas terminen
+    resultado_imagen, resultado_video = await asyncio.gather(procesar_imagen_task, procesar_video_task)
+
     imagen_procesada_path = resultado_imagen["imagen_procesada"]
 
-    # Procesar el video
-    resultado_video = procesar_video(video_path)
+    # Procesar el frame del video (si hay detecciones)
     if resultado_video["detecciones"]:
-        frame_path = guardar_frame(video_path, resultado_video["detecciones"][0]["frame"])
+        frame_path_task = loop.run_in_executor(executor, guardar_frame, video_path, resultado_video["detecciones"][0]["frame"])
+        frame_path = await frame_path_task
     else:
         frame_path = None
-
-    # Esperar a que tanto la imagen como el frame estén listos
-    while not os.path.exists(imagen_procesada_path):
-        pass
-    if frame_path:
-        while not os.path.exists(frame_path):
-            pass
 
     # Responder con todos los detalles una vez que ambos procesos hayan terminado
     return {
